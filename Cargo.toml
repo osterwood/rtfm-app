@@ -1,6 +1,5 @@
 [package]
 authors = ["Chris Osterwood <osterwood@gmail.com>"]
-edition = "2015"
 readme = "README.md"
 name = "smartusb"
 version = "0.1.0"
@@ -19,8 +18,8 @@ panic-halt = "0.2.0"
 
 ## Real Time For the Masses (RTFM) framework
 ## for ARM Cortex-M microcontrollers
-cortex-m-rtfm = "0.3.4"
-# cortex-m-rtfm = { git = "https://github.com/ykomatsu/cortex-m-rtfm", branch = "update" }
+# cortex-m-rtfm = "0.3.4"
+cortex-m-rtfm = { git = "https://github.com/ykomatsu/cortex-m-rtfm", branch = "update" }
 
 stm32f042-hal = "0.6.2"
 

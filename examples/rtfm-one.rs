@@ -17,7 +17,6 @@ extern crate cortex_m_rt as rt;
 use hal::prelude::*;
 use hal::gpio::{Output, PushPull};
 use hal::gpio::gpioc::PC13;
-// use hal::stm32;
 
 use rtfm::{app, Threshold};
 use rt::ExceptionFrame;
@@ -62,7 +61,7 @@ fn HardFault(ef: &ExceptionFrame) -> ! {
     panic!("{:#?}", ef);
 }
 
-fn init(mut p: init::Peripherals, r: init::Resources) {
+fn init(mut p: init::Peripherals, r: init::Resources) -> init::LateResources {
     // `init` can modify all the `resources` declared in `app!`
     r.ON;
 
@@ -80,7 +79,9 @@ fn init(mut p: init::Peripherals, r: init::Resources) {
     let mut led = gpioc.pc13.into_push_pull_output();
     led.set_low();
 
-    init::LateResources { LED: led };
+    init::LateResources {
+        LED: led
+    }
 }
 
 fn idle() -> ! {
