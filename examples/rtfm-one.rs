@@ -5,7 +5,6 @@
 #![no_main]
 #![feature(extern_crate_item_prelude)]
 
-#[macro_use]
 extern crate cortex_m;
 extern crate cortex_m_rtfm as rtfm;
 extern crate panic_halt;
@@ -39,14 +38,6 @@ app! {
         static LED: PC13<Output<PushPull>>;
     },
 
-    init: {
-        resources: [],
-    },
-
-    idle: {
-        path: idle,
-    },
-
     // Here tasks are declared
     //
     // Each task corresponds to an interrupt or an exception. Every time the
@@ -75,26 +66,10 @@ fn init(mut p: init::Peripherals, r: init::Resources) {
     // `init` can modify all the `resources` declared in `app!`
     r.ON;
 
-    // power on GPIOC
-    // p.device.RCC.apb2enr.modify(|_, w| w.iopcen().enabled());
-
-    // configure PC13 as output
-    // p.device.GPIOC.bsrr.write(|w| w.bs13().set());
-    // p.device
-    //     .GPIOC
-    //     .crh
-    //     .modify(|_, w| w.mode13().output().cnf13().push());
-
     let mut rcc = p.device.RCC.constrain();
-    // let clocks = rcc.cfgr.freeze(&mut flash.acr);
     let clocks = rcc.cfgr.freeze();
 
-    // let mut gpioa = p.device.GPIOA.split(&mut rcc.apb2);
-    // let mut gpiob = p.device.GPIOB.split(&mut rcc.apb2);
     let mut gpioc = p.device.GPIOC.split();
-
-    // let mut pc13: PC13<Output<PushPull>> =
-        // gpioc.pc13.into_push_pull_output(&mut gpioc.moder, &mut gpioc.otyper);
 
     // configure the system timer to generate one interrupt every second
     p.core.SYST.set_clock_source(SystClkSource::Core);
@@ -125,21 +100,9 @@ fn sys_tick(_t: &mut Threshold, mut r: SYS_TICK::Resources) {
     // toggle state
     *r.ON = !*r.ON;
 
-    // r.GPIOC.odr.write(|w| { w.odr13().bit(on) });
-
     if *r.ON {
-    //     // set the pin PC13 high
-    //     // NOTE(unsafe) atomic write to a stateless register
-    //     unsafe {
-    //         (*GPIOC::ptr()).bsrr.write(|w| w.bs13().set());
-    //     }
         r.LED.set_low();
     } else {
-    //     // set the pin PC13 low
-    //     // NOTE(unsafe) atomic write to a stateless register
-    //     unsafe {
-    //         (*GPIOC::ptr()).bsrr.write(|w| w.br13().reset());
-    //     }
         r.LED.set_high();
     }
 }
