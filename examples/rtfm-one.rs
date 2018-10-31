@@ -26,7 +26,7 @@ use stm32f0::stm32f0x2;
 
 
 app! {
-    device: stm32f0::stm32f0x2,
+    device: stm32f0x2,
 
     // Here data resources are declared
     //
@@ -80,7 +80,7 @@ fn init(mut p: init::Peripherals, r: init::Resources) {
     let mut led = gpioc.pc13.into_push_pull_output();
     led.set_low();
 
-    init::LateResources { LED: led }
+    init::LateResources { LED: led };
 }
 
 fn idle() -> ! {
